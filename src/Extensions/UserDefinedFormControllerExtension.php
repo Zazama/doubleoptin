@@ -3,17 +3,23 @@
 namespace Zazama\DoubleOptIn\Extensions;
 
 use SilverStripe\Core\Extension;
-use Zazama\DoubleOptIn\Models\EmailDummy;
-use Zazama\DoubleOptIn\Models\UserFormEmailToSend;
-use Zazama\DoubleOptIn\Models\EmailVerification;
+use SilverStripe\UserForms\Control\UserDefinedFormController;
 use SilverStripe\UserForms\Model\Submission\SubmittedFormField;
+use Zazama\DoubleOptIn\Models\EmailDummy;
+use Zazama\DoubleOptIn\Models\EmailVerification;
+use Zazama\DoubleOptIn\Models\UserFormEmailToSend;
 
-class UserDefinedFormControllerExtension extends Extension {
-    public function updateEmail(&$email, $recipient, $emailData) {
+/**
+ * @method (UserDefinedFormController & static) getOwner()
+ */
+class UserDefinedFormControllerExtension extends Extension
+{
+    public function updateEmail(&$email, $recipient, $emailData)
+    {
         $referenceField = $emailData['Fields'][0];
         $submittedForm = $referenceField->Parent();
         $page = $submittedForm->Parent();
-        if($page->EnableDoubleOptIn && $page->DoubleOptInFieldID) {
+        if ($page->EnableDoubleOptIn && $page->DoubleOptInFieldID) {
             $emailToSend = UserFormEmailToSend::create();
             $emailToSend->setData($email, $recipient, $emailData);
             $emailToSend->SubmittedFormID = $emailData['Fields'][0]->ParentID;
@@ -23,12 +29,12 @@ class UserDefinedFormControllerExtension extends Extension {
             return;
         }
 
-        if($page && $page->EnableDoubleOptIn && $page->DoubleOptInFieldID) {
+        if ($page && $page->EnableDoubleOptIn && $page->DoubleOptInFieldID) {
             $emailField = SubmittedFormField::get()->filter([
-                'Name' => $page->DoubleOptInField()->Name,
+                'Name'     => $page->DoubleOptInField()->Name,
                 'ParentID' => $submittedForm->ID
             ])->limit(1)[0];
-            if(!$emailField) {
+            if (!$emailField) {
                 return;
             }
             $emailVerification = EmailVerification::create();

@@ -1,0 +1,34 @@
+includes:
+    - phpstan-baseline.neon
+parameters:
+    level: 5
+    treatPhpDocTypesAsCertain: false
+    editorUrl: 'vscode://file/%%file%%:%%line%%'
+    editorUrlTitle: '%%relFile%%:%%line%%'
+    ignoreErrors:
+        - "#Can't use keyword 'self'#"
+    silverstan:
+        disallowMethodCallOnUnsafeDataObject:
+            enabled: false
+        disallowNewInstanceOnInjectable:
+            enabled: true
+        disallowOverridingOfConfigurationPropertyType:
+            enabled: true
+        disallowPropertyFetchOnConfigForClass:
+            enabled: true
+        disallowPropertyFetchOnUnsafeDataObject:
+            enabled: false
+        disallowStaticPropertyFetchOnConfigurationProperty:
+            enabled: true
+        requireParentCallInOverridenMethod:
+            enabled: true
+            classes:
+                -
+                    class: SilverStripe\ORM\DataObject
+                    method: onBeforeWrite
+                -
+                    class: SilverStripe\ORM\DataObject
+                    method: onAfterWrite
+    paths:
+        - src
+        - tests/Src

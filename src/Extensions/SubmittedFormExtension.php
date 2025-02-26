@@ -2,28 +2,34 @@
 
 namespace Zazama\DoubleOptIn\Extensions;
 
-use SilverStripe\Control\Email\Email;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
+use SilverStripe\UserForms\Model\Submission\SubmittedForm;
 use Zazama\DoubleOptIn\Models\EmailVerification;
 
-class SubmittedFormExtension extends DataExtension {
+/**
+ * @property int $EmailVerificationID
+ * @method EmailVerification EmailVerification()
+ * @method (SubmittedForm & static) getOwner()
+ */
+class SubmittedFormExtension extends Extension
+{
     private static $has_one = [
         'EmailVerification' => EmailVerification::class
     ];
 
-    public function canView($member = null) {
-        if($this->owner->Parent()) {
-            if($this->owner->Parent()->EnableDoubleOptIn) {
-                if($this->owner->EmailVerification()->Verified || !$this->owner->Parent()->DoubleOptInFieldID) {
-                    return $this->owner->Parent()->canView($member);
+    public function canView($member = null)
+    {
+        if ($this->getOwner()->Parent()) {
+            if ($this->getOwner()->Parent()->EnableDoubleOptIn) {
+                if ($this->getOwner()->EmailVerification()->Verified || !$this->getOwner()->Parent()->DoubleOptInFieldID) {
+                    return $this->getOwner()->Parent()->canView($member);
                 } else {
                     return false;
                 }
             } else {
-                return $this->owner->Parent()->canView($member);
+                return $this->getOwner()->Parent()->canView($member);
             }
-        } else {
-            return parent::canView($member);
         }
+        return false;
     }
 }

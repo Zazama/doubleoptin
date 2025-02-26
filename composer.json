@@ -1,6 +1,6 @@
 {
     "name": "zazama/doubleoptin",
-    "description": "A Silverstripe 4 module to implement GDPR required E-Mail double-opt-in.",
+    "description": "A Silverstripe module to implement GDPR required E-Mail double-opt-in on user-defined forms",
     "type": "silverstripe-vendormodule",
     "keywords": [
         "silverstripe",
@@ -11,9 +11,19 @@
     ],
     "license": "BSD-3-Clause",
     "require": {
-        "silverstripe/framework": "^4.0",
-        "silverstripe/admin": "^1.0",
-        "silverstripe/userforms": "^5.0"
+        "php": "^8.0.0",
+        "silverstripe/admin": "^2",
+        "silverstripe/framework": "^5",
+        "silverstripe/userforms": "^6"
+    },
+    "require-dev": {
+        "cambis/silverstan": "^1.0",
+        "cambis/silverstripe-rector": "^0.8.3",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan-deprecation-rules": "^1.2",
+        "rector/rector": "^1.2",
+        "silverstripe/standards": "^1.2"
     },
     "autoload": {
         "psr-4": {
@@ -27,5 +37,12 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "silverstripe/vendor-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    }
 }

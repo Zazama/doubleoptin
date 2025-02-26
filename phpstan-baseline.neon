@@ -1,0 +1,16 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^@method annotation '\\(SubmittedForm & static\\) getOwner\\(\\)' isn't expected and should be removed\\.$#"
+			count: 1
+			path: src/Extensions/SubmittedFormExtension.php
+
+		-
+			message: "#^@method annotation '\\(UserDefinedFormController & static\\) getOwner\\(\\)' isn't expected and should be removed\\.$#"
+			count: 1
+			path: src/Extensions/UserDefinedFormControllerExtension.php
+
+		-
+			message: "#^@method annotation '\\(UserDefinedForm & static\\) getOwner\\(\\)' isn't expected and should be removed\\.$#"
+			count: 1
+			path: src/Extensions/UserDefinedFormExtension.php
