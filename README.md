@@ -11,15 +11,15 @@ It will add a checkbox to Userforms to send a verification email before the subm
 
 ## Requirements
 
-* silverstripe/framework ^4.0
-* silverstripe/admin ^1.0
-* silverstripe/userforms ^5.0
+* silverstripe/framework ^5
+* silverstripe/admin ^2
+* silverstripe/userforms ^6
 
-This module was only tested on the newest 4.4.
+This module was only tested on the newest 5.3.
 
 ## Installation
 
-```
+```sh
 composer require zazama/doubleoptin
 ```
 
@@ -57,7 +57,7 @@ Zazama\DoubleOptIn\Services\EmailSender:
         $emailVerification->send($subject);
         $emailVerification->write();
     }
-    
+
     public function tokenChecks() {
         EmailVerification::IsSuccess($token); //bool
         EmailVerification::IsAlreadyVerified($token); //bool

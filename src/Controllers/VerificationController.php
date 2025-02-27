@@ -9,7 +9,8 @@ use SilverStripe\Core\Config\Configurable;
 use Zazama\DoubleOptIn\Models\EmailVerification;
 use Zazama\DoubleOptIn\Models\UserFormEmailToSend;
 
-class VerificationController extends PageController {
+class VerificationController extends PageController
+{
 
     use Configurable;
     /**
@@ -18,16 +19,17 @@ class VerificationController extends PageController {
     private static $layout_prefix = 'Zazama\\DoubleOptIn\\Verification';
     private static $template_holder = Page::class;
 
-    public function index(HTTPRequest $request) {
-        if($this->getRequest()->getVar('token')) {
+    public function index(HTTPRequest $request)
+    {
+        if ($this->getRequest()->getVar('token')) {
             $token = EmailVerification::get()->filter('Token', $this->getRequest()->getVar('token'))->limit(1)[0];
-            if(!$token) {
+            if (!$token) {
                 $this->badToken();
                 return $this->renderWith([
                     $this->config()->get('layout_prefix') . '_BadToken',
                     Page::class
                 ]);
-            } else if($token->Verified) {
+            } elseif ($token->Verified) {
                 $this->alreadyVerified();
                 return $this->renderWith([
                     $this->config()->get('layout_prefix') . '_AlreadyVerified',
@@ -51,10 +53,11 @@ class VerificationController extends PageController {
         }
     }
 
-    public function success($token) {
+    public function success($token)
+    {
         $emailsToSend = UserFormEmailToSend::get()->where(['SubmittedFormID' => $token->SubmittedFormID]);
-        if($token->SubmittedFormID && $emailsToSend) {
-            foreach($emailsToSend as $emailToSend) {
+        if ($token->SubmittedFormID && $emailsToSend) {
+            foreach ($emailsToSend as $emailToSend) {
                 $data = $emailToSend->getData();
                 $email = $data['email'];
                 $recipient = $data['recipient'];
@@ -78,11 +81,13 @@ class VerificationController extends PageController {
         $this->extend('updateSuccess', $token);
     }
 
-    public function badToken() {
+    public function badToken()
+    {
         $this->extend('updateBadToken');
     }
 
-    public function alreadyVerified() {
+    public function alreadyVerified()
+    {
         $this->extend('updateAlreadyVerified');
     }
 }
